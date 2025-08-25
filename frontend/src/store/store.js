@@ -6,6 +6,7 @@ import departmentReducer from '../features/departmentSlice.js'
 import { projectsReducer } from '../features/projectSlice'
 import { stageReducer } from '../features/stageSlice'
 import { substageReducer } from '../features/subStageSlice.js'
+import {BOMReducer} from "../features/BOM.js"
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     projects: projectsReducer,
     stages: stageReducer,
     substages: substageReducer,
+    BOM: BOMReducer,
   },
 })
 

@@ -27,6 +27,7 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
     req.user = user
     next()
   } catch (error) {
+    console.log(`Error: ${error?.message}`)
     return res.status(401).json({ message: error?.message })
   }
 })

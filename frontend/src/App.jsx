@@ -69,6 +69,11 @@ import EditDepartment from './pages/department/EditDepartment.jsx'
 import SubPartComponent from './components/Project/ActivityTable/SubPartComponent.jsx'
 import AddSubparts from './components/Project/AddSubparts/AddSubparts.jsx'
 
+//bom 
+
+import BomProject from './pages/BOM/BOMProject/BomProject.jsx'
+import BOMPage from './pages/BOM/BOMPage/BOMPage.jsx'
+
 export const API_BASE_URL = `http://localhost:3000`
 const App = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
@@ -533,7 +538,38 @@ const App = () => {
             />
             <Route path="ActivityTable" element={<ActivityTable />} />
             <Route path="SubPartComponent" element={<SubPartComponent />} />
-          </Route>
+
+
+
+
+             {/* bom routes */}
+
+            <Route
+                path='/bom-project'
+             element={
+               <PrivateRoute>
+                 <BomProject />
+              </PrivateRoute>
+             }
+          />
+
+
+          <Route
+            path='/bom-project/bom/:projectId'
+            element={
+              <PrivateRoute>
+                <BOMPage />
+              </PrivateRoute>
+            }
+          />
+
+        </Route>
+
+
+
+
+
+
           <Route
             path="*"
             element={<Navigate to={isAuthenticated ? '/' : '/login'} />}

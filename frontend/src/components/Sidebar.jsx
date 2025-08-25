@@ -130,6 +130,12 @@ const Sidebar = () => {
           icon: 'BsListTask',
           access: ProjectManagementAccess[0],
         },
+         {
+          name: 'BOM',
+          slug: '/bom-project',
+          icon: 'BsListTask',
+          access: ProjectManagementAccess[0],
+        },
       ],
     },
     {
