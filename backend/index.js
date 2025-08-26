@@ -28,6 +28,9 @@ import morgan from "morgan"
 
 import bomRoute from './routes/bom.route.js';
 
+import inventoryRoute from './routes/inventory.route.js';
+import transactionRoute from './routes/transactions.route.js';
+
 
 
 const app = express()
@@ -76,3 +79,6 @@ app.use('/department', ticketDepartmentRoutes)
 app.use('/employee', ticketEmployeeRoutes)
 
 app.use("/api/v1/bom/",bomRoute);
+
+app.use("/api/v1/inventory", inventoryRoute);
+app.use("/api/v1/transactions",transactionRoute);
