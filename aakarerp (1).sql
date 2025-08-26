@@ -65,7 +65,8 @@ CREATE TABLE IF NOT EXISTS `basic_solution` (
   `solution` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `issue_type_id` (`issue_type_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 

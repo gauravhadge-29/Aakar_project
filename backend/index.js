@@ -26,6 +26,8 @@ import stageRoutes from './routes/stage.routes.js'
 import substageRoutes from './routes/substage.routes.js'
 import morgan from "morgan"
 
+import bomRoute from './routes/bom.route.js';
+
 
 
 const app = express()
@@ -72,3 +74,5 @@ app.use('/basicSolutions', basicSolutionsRoutes)
 app.use('/sendMailTo', sendMailToRoutes)
 app.use('/department', ticketDepartmentRoutes)
 app.use('/employee', ticketEmployeeRoutes)
+
+app.use("/api/v1/bom/",bomRoute);

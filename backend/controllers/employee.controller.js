@@ -133,6 +133,7 @@ const generateAccessAndRefreshToken = async (employeeId) => {
 
 export const loginEmployee = asyncHandler(async (req, res) => {
     const { employeeEmail, employeePassword } = req.body;
+    console.log("Login attempt for:", employeeEmail);
     const hashedPassword = await bcrypt.hash("admin123", 10);
     console.log("New Password:", hashedPassword);
     // Find employee by email
@@ -150,10 +151,16 @@ export const loginEmployee = asyncHandler(async (req, res) => {
             const employee = results[0];
             console.log(employee);
             // Check if the password matches
+            console.log("Password to compare:", employeePassword);
+            console.log("Hashed password from DB:", employee.employeePassword);
             const isPasswordValid = await bcrypt.compare(employeePassword, employee.employeePassword);
+            console.log(isPasswordValid)
             if (!isPasswordValid) {
+                console.log("Invalid password attempt for employee: Comparison Failed", employeeEmail);
                 return res.status(401).json({ message: "Invalid email or password" });
             }
+
+            console.log("Password is valid for employee:", isPasswordValid);
 
             // Generate access and refresh tokens
             const { accessToken, refreshToken } = await generateAccessAndRefreshToken(employee.employeeId);

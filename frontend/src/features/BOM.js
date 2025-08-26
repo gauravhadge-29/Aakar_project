@@ -8,7 +8,7 @@ export const fetchBom = createAsyncThunk(
     async (projectId) => {
         try {
             console.log("started fetching item details");
-            const response = await axios.get(`http://localhost:3004/api/v1/bom/fetchBomDetails/${projectId}`);
+            const response = await axios.get(`http://localhost:3000/api/v1/bom/fetchBomDetails/${projectId}`);
             
             // Log the full response to inspect the structure
             console.log("Full API Response:", response.data.data);
@@ -29,7 +29,7 @@ export const addBomDesign = createAsyncThunk(
     async (bomDesign) => {
         try {
             console.log("started")
-            const response = await axios.post(`http://localhost:3004/api/v1/bom/addBomDesign`, bomDesign); // Sending new item to API
+            const response = await axios.post(`http://localhost:3000/api/v1/bom/addBomDesign`, bomDesign); // Sending new item to API
             console.log("API Response Data:", response); // Debug log
             return response.data; // Assuming the response contains the new item data
             console.log("ended");
@@ -46,7 +46,7 @@ export const updateBomDesign = createAsyncThunk(
         try {
            15
             console.log("started")
-            const response = await axios.put(`http://localhost:3004/api/v1/bom/updateBomDesign/${bomId}`, updatedBOM); // Sending new item to API
+            const response = await axios.put(`http://localhost:3000/api/v1/bom/updateBomDesign/${bomId}`, updatedBOM); // Sending new item to API
             console.log("API Response Data:", response); // Debug log
             return response.data; // Assuming the response contains the new item data
             console.log("ended");
@@ -63,7 +63,7 @@ export const deleteBomDesign= createAsyncThunk(
     "bom/deleteeBomDesign",
     async(itemId)=>{
         try {
-            const response = await axios.delete(`http://localhost:3004/api/v1/bom/deleteBomDesign/${itemId}`)
+            const response = await axios.delete(`http://localhost:3000/api/v1/bom/deleteBomDesign/${itemId}`)
             console.log("API Response Data:", response); // Debug log
 
             return response.data;
