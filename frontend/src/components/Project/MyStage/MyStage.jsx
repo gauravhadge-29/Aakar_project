@@ -101,6 +101,8 @@ const MyStage = () => {
     progress = 0,
   } = stage
 
+  const [showTableMode, setShowTableMode] = useState(false)
+
   return (
     <section className="addProject">
       <div className="addForm">
@@ -131,15 +133,11 @@ const MyStage = () => {
               employeeAccess[11] == '1') && (
               <button
                 className="flex justify-center items-center gap-3 bg-[#0061A1] text-white py-1.5 px-2 rounded"
-                type="submit"
-                onClick={() =>
-                  navigate(`/myProject/${pNo}/updateStage/${sNo}`, {
-                    replace: true,
-                  })
-                }
+                type="button"
+                onClick={() => setShowTableMode((s) => !s)}
               >
                 <FiEdit size={20} className="edit-icon" />
-                <span>Add Subpart</span>
+                <span>{showTableMode ? 'Close' : 'Add Subpart'}</span>
               </button>
             )}
           </div>
@@ -203,7 +201,8 @@ const MyStage = () => {
               </div>
             </div>
           </div>
-          <SubPartComponent />
+          <SubPartComponent tableMode={showTableMode} editMode={showTableMode} />
+
         </div>
         {/* {activeSubStages.length > 0 && (
           <TableComponent

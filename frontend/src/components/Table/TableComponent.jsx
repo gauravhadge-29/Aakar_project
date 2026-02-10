@@ -33,6 +33,9 @@ const TableComponent = ({
   itemLabel,
   navigateTo,
   searchLabel,
+  showSearchbar = true,
+  showSortButton = true,
+  showDownloadButton = true,
 }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -137,13 +140,17 @@ const TableComponent = ({
           justifyContent: 'space-between',
         }}
       >
-        <Searchbar
-          items={sortedRows}
-          itemKey={itemKey}
-          itemLabel={itemLabel}
-          navigateTo={navigateTo}
-          searchLabel={searchLabel}
-        />
+        {showSearchbar ? (
+          <Searchbar
+            items={sortedRows}
+            itemKey={itemKey}
+            itemLabel={itemLabel}
+            navigateTo={navigateTo}
+            searchLabel={searchLabel}
+          />
+        ) : (
+          <div />
+        )}
 
         <div
           style={{
@@ -153,48 +160,56 @@ const TableComponent = ({
           }}
         >
           {/* SortBy Button */}
-          <div
-            className="hover:cursor-pointer border-2 border-[#0061A1] rounded px-4 py-1.5 font-semibold text-[#0061A1] flex justify-between items-center gap-3"
-            onClick={(event) => setSortMenuAnchorEl(event.currentTarget)}
-          >
-            <FiDownload />
-            <p>Sort By</p>
-          </div>
-          <Menu
-            anchorEl={sortMenuAnchorEl}
-            open={Boolean(sortMenuAnchorEl)}
-            onClose={() => setSortMenuAnchorEl(null)}
-          >
-            <MenuItem onClick={() => handleSortByCreatedAt('newest')}>
-              Newest First
-            </MenuItem>
-            <MenuItem onClick={() => handleSortByCreatedAt('oldest')}>
-              Oldest First
-            </MenuItem>
-          </Menu>
+          {showSortButton && (
+            <>
+              <div
+                className="hover:cursor-pointer border-2 border-[#0061A1] rounded px-4 py-1.5 font-semibold text-[#0061A1] flex justify-between items-center gap-3"
+                onClick={(event) => setSortMenuAnchorEl(event.currentTarget)}
+              >
+                <FiDownload />
+                <p>Sort By</p>
+              </div>
+              <Menu
+                anchorEl={sortMenuAnchorEl}
+                open={Boolean(sortMenuAnchorEl)}
+                onClose={() => setSortMenuAnchorEl(null)}
+              >
+                <MenuItem onClick={() => handleSortByCreatedAt('newest')}>
+                  Newest First
+                </MenuItem>
+                <MenuItem onClick={() => handleSortByCreatedAt('oldest')}>
+                  Oldest First
+                </MenuItem>
+              </Menu>
+            </>
+          )}
 
           {/* Download Button */}
-          <div
-            className="hover:cursor-pointer border-2 border-[#0061A1] rounded px-4 py-1.5 font-semibold text-[#0061A1] flex justify-between items-center gap-3"
-            onClick={handleDownloadClick}
-          >
-            <FiDownload />
-            <p>Download</p>
-          </div>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={() => downloadFile('excel')}>
-              <img src={downloadasexcel} alt="Excel" />
-              Excel
-            </MenuItem>
-            <MenuItem onClick={() => downloadFile('pdf')}>
-              <img src={downloadaspdf} alt="PDF" />
-              PDF
-            </MenuItem>
-          </Menu>
+          {showDownloadButton && (
+            <>
+              <div
+                className="hover:cursor-pointer border-2 border-[#0061A1] rounded px-4 py-1.5 font-semibold text-[#0061A1] flex justify-between items-center gap-3"
+                onClick={handleDownloadClick}
+              >
+                <FiDownload />
+                <p>Download</p>
+              </div>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => downloadFile('excel')}>
+                  <img src={downloadasexcel} alt="Excel" />
+                  Excel
+                </MenuItem>
+                <MenuItem onClick={() => downloadFile('pdf')}>
+                  <img src={downloadaspdf} alt="PDF" />
+                  PDF
+                </MenuItem>
+              </Menu>
+            </>
+          )}
         </div>
       </div>
 
@@ -261,6 +276,7 @@ const TableComponent = ({
                       {columns.map((column) => (
                         <TableCell key={column.id} align={column.align}>
                           {row[column.id]}
+                          
                         </TableCell>
                       ))}
                     </TableRow>

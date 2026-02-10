@@ -6,12 +6,12 @@ const connection = mysql.createConnection({
   user: 'root',
   password: '',
   database: 'aakar',
-  port: 3307 
+  port: 3306 
 })
 
 connection.connect((err) => {
   if (err) {
-    console.log(new ApiError(500, 'Database connection failed.'))
+    console.log(new ApiError(500, `Database connection failed. ${err.message}`))
     process.exit(1)
   } else {
     console.log('Connected to database as ID: ' + connection.threadId)

@@ -1,5 +1,4 @@
 import express from 'express'
-import cors from 'cors'
 import bodyParser from 'body-parser'
 
 // Import route modules using ES module syntax (all with `import`)
@@ -17,7 +16,7 @@ import updateSkillRoutes from '../controllers/updateSkill.js'
 
 
 const app = express()
-app.use(cors())
+// Do not enable a separate CORS middleware here — the main server (`backend/index.js`) configures CORS globally
 app.use(express.json())
 app.use(bodyParser.json())
 

@@ -7,6 +7,7 @@ import { projectsReducer } from '../features/projectSlice'
 import { stageReducer } from '../features/stageSlice'
 import { substageReducer } from '../features/subStageSlice.js'
 import {BOMReducer} from "../features/BOM.js"
+import activitiesReducer from '../features/activitiesSlice.js'
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     stages: stageReducer,
     substages: substageReducer,
     BOM: BOMReducer,
+    activities: activitiesReducer,
   },
 })
 

@@ -68,6 +68,7 @@ import EditDesignation from './pages/designation/EditDesignation.jsx'
 import EditDepartment from './pages/department/EditDepartment.jsx'
 import SubPartComponent from './components/Project/ActivityTable/SubPartComponent.jsx'
 import AddSubparts from './components/Project/AddSubparts/AddSubparts.jsx'
+import Activities from './pages/substages/Activities.jsx'
 
 //bom 
 
@@ -552,6 +553,17 @@ const App = () => {
               </PrivateRoute>
              }
           />
+
+          <Route
+            path="/activities"
+            element={
+              <PrivateRoute>
+                <Activities />
+              </PrivateRoute>
+            }
+          />
+
+
 
 
           <Route

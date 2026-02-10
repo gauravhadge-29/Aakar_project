@@ -4,7 +4,7 @@ import ApiResponse from '../utils/ApiResponse.js'
 import { connection as db } from '../db/index.js'
 
 export const getSubStagesByStageId = asyncHandler(async (req, res) => {
-  // console.log(req.params)
+  console.log(req.params)
 
   const stageId = req.params.id
   const query = `SELECT ss.*, eo.employeeName AS owner, cb.employeeName AS createdBy,eo.customEmployeeId AS ownerId, cb.customEmployeeId AS createdById
@@ -276,8 +276,8 @@ export const updateSubStage = asyncHandler(async (req, res) => {
 
       // Create history for the substage
       const insertValues = [
-        substage.stageId,
-        substage.stageName,
+        substage.substageId,
+        substage.substageName,
         substage.startDate,
         substage.endDate,
         substage.owner,
@@ -293,8 +293,8 @@ export const updateSubStage = asyncHandler(async (req, res) => {
 
       // Prepare updated fields
       const updatedFields = {
-        stageId: req.body.stageId || substage.stageId,
-        stageName: req.body.stageName || substage.stageName,
+        substageId: req.body.substageId || substage.substageId,
+        substageName: req.body.substageName || substage.substageName,
         startDate: req.body.startDate || substage.startDate,
         endDate: req.body.endDate || substage.endDate,
         owner: owner, // Use updated owner (employeeId)
@@ -333,8 +333,8 @@ export const updateSubStage = asyncHandler(async (req, res) => {
           .replace("T", " ")
           .replace("Z", "");
         const updateValues = [
-          updatedFields.stageId,
-          updatedFields.stageName,
+          updatedFields.substageId,
+          updatedFields.substageName,
           updatedFields.startDate,
           updatedFields.endDate,
           updatedFields.owner,
@@ -376,6 +376,8 @@ export const createSubStage = asyncHandler(async (req, res) => {
   const match = req.body.owner ? req.body.owner.match(/\(([^)]+)\)/) : null
   const customEmployeeId = match ? match[1] : null
 
+  console.log('Creating substage with data:', req.body)
+
   if (!customEmployeeId) {
     return res
       .status(400)
@@ -400,13 +402,14 @@ export const createSubStage = asyncHandler(async (req, res) => {
     const employeeId = result[0].employeeId
 
     const stageQuery = `INSERT INTO substage (
-      stageId, stageName, startDate, endDate, owner, machine, duration, 
-      seqPrevStage, createdBy, progress, projectNumber
+      stageId, substageName, startDate, endDate, owner, machine, duration, 
+      seqPrevStage, createdBy, progress, ProjectNumber
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
     const values = [
+      // req.body.substageId,
       req.body.stageId,
-      req.body.stageName,
+      req.body.substagename,
       req.body.startDate,
       req.body.endDate,
       employeeId, // Use employeeId for owner
@@ -417,6 +420,8 @@ export const createSubStage = asyncHandler(async (req, res) => {
       req.body.progress,
       req.body.projectNumber,
     ]
+
+    console.log('Creating substage with values:', values)
 
     db.query(stageQuery, values, (err, data) => {
       if (err) {
@@ -482,4 +487,42 @@ export const deleteSubStage = asyncHandler(async (req, res) => {
     console.error(err)
     res.status(500).send(new ApiError(500, 'Error deleting substage'))
   }
+})
+
+export const getSingleSubStageById = asyncHandler(async (req, res) => {
+  const subStageId = req.params.id
+  console.log('Fetching substage with ID:', subStageId)
+  const query = `SELECT ss.*, eo.employeeName AS owner, cb.employeeName AS createdBy, 
+                        eo.customEmployeeId AS ownerId, cb.customEmployeeId AS createdById
+                 FROM substage ss
+                 INNER JOIN employee eo ON ss.owner = eo.employeeId 
+                 INNER JOIN employee cb ON ss.createdBy = cb.employeeId
+                 WHERE ss.subStageId = ? AND ss.historyOf IS NULL`
+
+  db.query(query, [subStageId], (err, data) => {
+    if (err) {
+      res.status(500).send(new ApiError(500, 'Error retrieving substage'))
+      return
+    }
+    if (data.length === 0) {
+      res.status(404).send(new ApiError(404, 'No substage found'))
+      return
+    }
+
+    const substage = {
+      ...data[0],
+      startDate: data[0].startDate
+        ? new Date(data[0].startDate).toLocaleDateString('en-CA')
+        : null,
+      endDate: data[0].endDate
+        ? new Date(data[0].endDate).toLocaleDateString('en-CA')
+        : null,
+    }
+
+    console.log('Retrieved substage:', substage)
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, substage, 'SubStage retrieved successfully.'))
+  })
 })

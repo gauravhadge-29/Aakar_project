@@ -6,6 +6,7 @@ import employeeRoute from './routes/employee.route.js'
 import cookieParser from 'cookie-parser'
 import authRoutes from './routes/auth.routes.js'
 import designationRoute from './routes/designation.route.js'
+import activityRoute from './routes/activity.routes.js'
 import server from './routes/server.js'
 
 // Ticket Import routes
@@ -24,6 +25,7 @@ import ticketEmployeeRoutes from './ticketRoutes/employee.js'
 import projectRoutes from './routes/project.routes.js'
 import stageRoutes from './routes/stage.routes.js'
 import substageRoutes from './routes/substage.routes.js'
+import substagesMasterRoutes from './routes/substagesMaster.routes.js'
 import morgan from "morgan"
 
 import bomRoute from './routes/bom.route.js';
@@ -35,6 +37,15 @@ import transactionRoute from './routes/transactions.route.js';
 
 const app = express()
 
+
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'http://localhost:5174'], // Your frontend URL (adjust port if necessary)
+    credentials: true, // Allow credentials like cookies to be sent
+  })
+)
+
+
 dotenv.config({ path: './.env' })
 app.use(morgan("dev"))
 app.use(express.json())
@@ -43,12 +54,7 @@ app.use(express.static('uploads'))
 app.use(express.static('public'))
 app.use(cookieParser())
 
-app.use(
-  cors({
-    origin: 'http://localhost:5173', // Your frontend URL (adjust port if necessary)
-    credentials: true, // Allow credentials like cookies to be sent
-  })
-)
+
 
 const port = process.env.PORT || 3000
 
@@ -64,6 +70,8 @@ app.use('/api/v1/designation/', designationRoute)
 app.use('/api', projectRoutes)
 app.use('/api', stageRoutes)
 app.use('/api', substageRoutes)
+app.use('/api/v1', substagesMasterRoutes)
+app.use('/api/', activityRoute)
 
 app.use(server)
 
@@ -82,3 +90,5 @@ app.use("/api/v1/bom/",bomRoute);
 
 app.use("/api/v1/inventory", inventoryRoute);
 app.use("/api/v1/transactions",transactionRoute);
+
+app.use("/api/v1/activity", activityRoute);
